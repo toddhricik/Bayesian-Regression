@@ -2,7 +2,7 @@
 # <H1>A Guassian Class Implemented With Jax</H1>
 
 # %% [markdown]
-# From [[2,22:24]](#References) we have the following dataclass
+# From [[1,22:24]](#References) we have the following dataclass
 
 # %%
 import dataclasses
@@ -11,7 +11,8 @@ from typing import Self
 import jax
 from jax import numpy as jnp
 from jaxtyping import Array, Float, Int, PRNGKeyArray, PyTree
-
+from collections.abc import Callable
+jax.config.update("jax_enable_x64", True)
 
 
 # %%
@@ -110,7 +111,8 @@ class Gaussian:
     
     # From [1,26:03]
     @functools.singledispatchmethod
-    def __add__(self, other: Float[Array, "D "], float) -> Self:
+    # This signature accepts the parameter "other" as either a Float[Array, "D "] or just simple float
+    def __add__(self, other: Float[Array, "D "] | float) -> Self:
         """Affine maps of Gaussian RVs are Gaussian RVs.
         Shift of a Gaussian RV by a constant.
         I implement this a a single-dispatch method, becuase jnp.ndarrays 
@@ -153,7 +155,7 @@ def _add_gaussians(self, other: Gaussian)->Gaussian:
 # <H1>References</H1>
 
 # %% [markdown]
-# [2.] Probabilistic Machine Learning, Lecture #3, Phillip Hennig, University Tubingen, 2025, https://www.youtube.com/watch?v=CXCNoAw3YYM&list=PL05umP7R6ij0hPfU7Yuz8J9WXjlb3MFjm&index=3.<br>
+# [1.] Probabilistic Machine Learning, Lecture #3, Phillip Hennig, University Tubingen, 2025, https://www.youtube.com/watch?v=CXCNoAw3YYM&list=PL05umP7R6ij0hPfU7Yuz8J9WXjlb3MFjm&index=3.<br>
 
 # %% [markdown]
 # 
